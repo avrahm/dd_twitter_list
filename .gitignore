@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .env
+firebase-debug.log
 
 # testing
 /coverage
@@ -37,3 +38,15 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+
+# Compiled JavaScript files
+functions/dist/**/*.js
+functions/dist/**/*.js.map
+
+# TypeScript v1 declaration files
+functions/typings/
+
+# Node.js dependency directory
+functions/node_modules/
+functions/permissions.json

@@ -1,0 +1,8 @@
+{
+  "filepath": "/Users/Avrahm/Projects/2-Ideas/dd_twitter_list/client/.prettierrc",
+  "parser": "yaml",
+  "semi": true,
+  "trailingComma": "none",
+  "singleQuote": false,
+  "printWidth": 80
+}
