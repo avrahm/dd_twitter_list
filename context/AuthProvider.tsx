@@ -13,7 +13,7 @@ const defaultState = {
 
 interface UserContext {
     user: User;
-    setUser: (user: object) => void;
+    setUser: (user: User) => void;
     signOutUser?: () => void;
 }
 
@@ -46,7 +46,13 @@ const AuthProvider = (props: Props): JSX.Element | any => {
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser, signOutUser }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                setUser,
+                signOutUser,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );

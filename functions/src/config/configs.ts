@@ -12,6 +12,7 @@ export const configs = {
     TWITTER_OWNER_TOKEN: process.env.TWITTER_LIST_OWNER_TOKEN as string,
     TWITTER_OWNER_SECRET: process.env.TWITTER_LIST_OWNER_SECRET as string,
     API_URL: process.env.FIREBASE_API_URL as string,
+    TWITTER_DD_LIST_ID: process.env.TWITTER_DD_LIST_ID as string,
 };
 
 export const firebaseConfig = {
