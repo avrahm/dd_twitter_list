@@ -48,7 +48,36 @@ export const getLists = async (req: Request, res: Response): Promise<unknown> =>
 export const getListFollowers = async (req: Request, res: Response): Promise<unknown> => {
     const url = configs.TWITTER_API_URL + "/1.1/lists/subscribers.json";
     const params = {
-        list_id: req.params.listId || "1505738404935446529",
+        list_id: req.params.listId || configs.TWITTER_DD_LIST_ID,
+        skip_status: true,
+        count: 5000,
+    };
+    const headers = {
+        Authorization: "Bearer " + configs.TWITTER_BEARER_TOKEN,
+    };
+    try {
+        const response = await axios.get(url, {
+            withCredentials: true,
+            params,
+            headers,
+        });
+        return res.status(200).send({
+            message: response.statusText,
+            data: response.data,
+        });
+    } catch (error) {
+        let errorMessage = "Unknown error";
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        return res.status(500).send({ errorMessage });
+    }
+};
+
+export const getListMembers = async (req: Request, res: Response): Promise<unknown> => {
+    const url = configs.TWITTER_API_URL + "/1.1/lists/members.json";
+    const params = {
+        list_id: req.params.listId || configs.TWITTER_DD_LIST_ID,
         skip_status: true,
         count: 5000,
     };
@@ -77,7 +106,7 @@ export const getListFollowers = async (req: Request, res: Response): Promise<unk
 export const manageList = async (req: Request, res: Response): Promise<unknown> => {
     const useConsumer = consumer;
     const { action } = req.body;
-    const url = configs.TWITTER_API_URL + `/1.1/lists/${action}.json`;
+    const url = configs.TWITTER_API_URL + `/1.1/lists/subscribers/${action}.json`;
     const token = req.body.oauthToken;
     const tokenSecret = req.body.oauthTokenSecret;
     const body = {

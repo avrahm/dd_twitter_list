@@ -19,7 +19,10 @@ app.use("/api", router);
 router.get("/list", listController.getLists);
 
 // get a list followers
-router.get("/list/followers", firebaseAuthToken, listController.getListFollowers);
+router.get("/list/followers", listController.getListFollowers);
+
+// get a list members
+router.get("/list/members", listController.getListMembers);
 
 // allow a user to follow/unfollow the list
 router.post("/list", firebaseAuthToken, listController.manageList);
