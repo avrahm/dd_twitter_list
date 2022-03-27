@@ -9,6 +9,8 @@ export const configs = {
     TWITTER_AUTHORIZE_URL: "https://api.twitter.com/oauth/authorize",
     TWITTER_API_URL: "https://api.twitter.com",
     TWITTER_API_VERSION: "",
+    TWITTER_OWNER_TOKEN: process.env.TWITTER_LIST_OWNER_TOKEN as string,
+    TWITTER_OWNER_SECRET: process.env.TWITTER_LIST_OWNER_SECRET as string,
     API_URL: process.env.FIREBASE_API_URL as string,
 };
 
