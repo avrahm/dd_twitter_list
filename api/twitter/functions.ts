@@ -2,24 +2,11 @@ import axios from "axios";
 import { configs } from "../../config/configs";
 import { User } from "../../config/Interfaces";
 
-export const isUserFollowingList = async (user: User) => {
-    const listOfFollowers = await getListFollowers(user);
-    if (!listOfFollowers || listOfFollowers == undefined || listOfFollowers.length == 0) {
-        return false;
-    }
-    const { users } = listOfFollowers;
-    if (users.length == 0) return false;
-    const isFollowing = users.some(
-        (follower: { id_str: string }) => follower.id_str == user.twitterData?.uid
-    );
-    return isFollowing;
-};
-
 export const getMainList = async (userId: string = "avrahm") => {
     const lists = await getLists(userId);
     if (!lists) return null;
     const list = lists.filter(
-        (list: { id_str: string }) => list.id_str == process.env.TWITTER_DD_LIST_ID
+        (list: { id_str: string }) => list.id_str == configs.TWITTER_DD_LIST_ID
     );
     if (!list) return null;
     return list;
@@ -38,11 +25,12 @@ const getLists = async (twitterId: string) => {
     }
 };
 
-const getListFollowers = async (
+export const getListOfUsers = async (
     user: User,
-    listId: string | undefined = process.env.TWITTER_DD_LIST_ID
+    type: string,
+    listId: string | undefined = configs.TWITTER_DD_LIST_ID
 ) => {
-    const url = configs.API_URL + "/list/followers";
+    const url = configs.API_URL + `/list/${type}`;
     const headers = {
         Authorization: "Bearer " + user.firebaseToken,
     };

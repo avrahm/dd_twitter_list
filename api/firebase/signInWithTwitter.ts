@@ -1,7 +1,7 @@
 import { signInWithPopup, TwitterAuthProvider } from "@firebase/auth";
 import { User } from "../../config/Interfaces";
 import { firebase } from "./firebase";
-import { createUser } from "./user";
+import { createUser } from "./functions";
 
 export const twitterSignIn = () => {
     const provider = new TwitterAuthProvider();

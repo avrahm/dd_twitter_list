@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { firebase } from "../api/firebase/firebase";
-import { getUser, refreshToken, signout } from "../api/firebase/user";
+import { getUser, refreshToken, signout } from "../api/firebase/functions";
 import { User } from "../config/Interfaces";
 
 const defaultState = {
