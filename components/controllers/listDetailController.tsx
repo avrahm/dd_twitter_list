@@ -1,26 +1,13 @@
-import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { getListOfUsers, getMainList, manageList, manageMember } from "../../api/twitter/lists";
-import { User } from "../../config/Interfaces";
+import { getListOfUsers, manageList, manageMember } from "../../api/twitter/functions";
+import { List, User } from "../../config/Interfaces";
 import { useAuth } from "../../context/AuthProvider";
 import { ListDetailView } from "../views/listDetailView";
 
-export const ListDetailController: NextPage = () => {
-    const [list, setList] = useState<any[]>([]);
+export const ListDetailController = ({ list }: { list: List }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [isMember, setIsMember] = useState<boolean>(false);
     const { user } = useAuth();
-
-    useEffect(() => {
-        if (user) {
-            getMainList().then(async (list) => {
-                setList(list);
-                isUserOnListByType(user, "members");
-                isUserOnListByType(user, "followers");
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user === null]);
 
     const isUserOnListByType = async (user: User, type: string) => {
         const allUsersByType = await getListOfUsers(user, type); // followers or members
@@ -66,22 +53,22 @@ export const ListDetailController: NextPage = () => {
         }
     };
 
+    useEffect(() => {
+        if (list && user) {
+            isUserOnListByType(user, "members");
+            isUserOnListByType(user, "followers");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [list === null]);
+
     return (
         <div>
-            {list &&
-                user &&
-                list.map((item, index) => {
-                    return (
-                        <ListDetailView
-                            item={item}
-                            index={index}
-                            key={index}
-                            userAction={userAction}
-                            isFollowing={isFollowing}
-                            isMember={isMember}
-                        />
-                    );
-                })}
+            <ListDetailView
+                list={list}
+                userAction={userAction}
+                isFollowing={isFollowing}
+                isMember={isMember}
+            />
         </div>
     );
 };

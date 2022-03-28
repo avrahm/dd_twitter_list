@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { ListDetailController } from "../components/controllers/listDetailController";
+import { ListViewController } from "../components/controllers/listViewController";
 import { SignUpView } from "../components/views/signupView";
 import styles from "../styles/Home.module.css";
 
@@ -14,7 +14,9 @@ const Home: NextPage = () => {
             <h1 className="text-3xl font-bold underline pb-5">Welcome to DD Twitter List</h1>
 
             <SignUpView />
-            <ListDetailController />
+            <div className={styles.container}>
+                <ListViewController />
+            </div>
         </div>
     );
 };
