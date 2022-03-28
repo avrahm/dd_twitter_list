@@ -14,6 +14,13 @@ firebase-debug.log
 /.next/
 /out/
 
+# client
+/client/.next
+/client/node_modules
+/client/.vscode
+
+.vscode
+
 # production
 /build
 
