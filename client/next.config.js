@@ -2,16 +2,19 @@
 const webpack = require("webpack");
 
 const { parsed: myEnv } = require("dotenv").config({
-    path: ".env", // to resolve empty if .env file not found
+    path: ".env.local", // to resolve empty if .env file not found
     debug: true,
 });
 
 const nextConfig = {
     reactStrictMode: true,
     webpack(config) {
-        config.plugins.push(new webpack.EnvironmentPlugin(myEnv));
-        return config;
+        if (process.env.NODE_ENV === "development") {
+            config.plugins.push(new webpack.EnvironmentPlugin(myEnv));
+            return config;
+        }
     },
+
     images: {
         domains: ["pbs.twimg.com"],
     },
