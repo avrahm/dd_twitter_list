@@ -2,7 +2,7 @@
 const webpack = require("webpack");
 
 const { parsed: myEnv } = require("dotenv").config({
-    path: ".env",
+    //path: ".env",
     debug: true,
 });
 
