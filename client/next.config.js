@@ -2,7 +2,7 @@
 const webpack = require("webpack");
 
 const { parsed: myEnv } = require("dotenv").config({
-    //path: ".env",
+    path: ".env", // to resolve empty if .env file not found
     debug: true,
 });
 
