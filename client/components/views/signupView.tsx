@@ -1,8 +1,7 @@
-import type { NextPage } from "next";
 import { twitterSignIn } from "../../api/firebase/signInWithTwitter";
 import { useAuth } from "../../context/AuthProvider";
 
-export const SignUpView: NextPage = () => {
+export const SignUpView = () => {
     const { user, signOutUser } = useAuth();
 
     return (

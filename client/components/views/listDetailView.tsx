@@ -11,8 +11,6 @@ export const ListDetailView = ({
     isMember: boolean;
     userAction: Function;
 }) => {
-    console.log("ListDetailView", list);
-
     return (
         <div className="flex flex-col p-4">
             {list && (

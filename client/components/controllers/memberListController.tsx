@@ -4,7 +4,6 @@ import { MemberListView } from "../views/memberListView";
 
 export const MemberListController = ({ members }: { members: Member[] }) => {
     const { user } = useAuth();
-    console.log(members);
 
     return (
         <div className="">
