@@ -15,7 +15,7 @@ export const SignUpView = () => {
                         <div className="p-2">
                             <button
                                 onClick={signOutUser}
-                                className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded"
+                                className="bg-blue-500 hover:bg-blue-300 w-[100px] text-white py-1 px-2 rounded"
                             >
                                 Sign out
                             </button>
@@ -27,7 +27,7 @@ export const SignUpView = () => {
                 <div className="flex flex-col text-center p-5 border-2">
                     <p className="text-xl p-3">Sign in to get started.</p>
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded"
+                        className="bg-blue-500 hover:bg-blue-300 text-white py-1 px-2 rounded"
                         onClick={twitterSignIn}
                     >
                         Sign in with Twitter

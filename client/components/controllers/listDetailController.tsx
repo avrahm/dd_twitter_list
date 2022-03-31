@@ -63,12 +63,14 @@ export const ListDetailController = ({ list }: { list: List }) => {
 
     return (
         <div>
-            <ListDetailView
-                list={list}
-                userAction={userAction}
-                isFollowing={isFollowing}
-                isMember={isMember}
-            />
+            {list && user && (
+                <ListDetailView
+                    list={list}
+                    userAction={userAction}
+                    isFollowing={isFollowing}
+                    isMember={isMember}
+                />
+            )}
         </div>
     );
 };
