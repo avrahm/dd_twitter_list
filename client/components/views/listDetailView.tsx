@@ -22,7 +22,7 @@ export const ListDetailView = ({
                     <div className="flex flex-row py-2">
                         {isFollowing ? (
                             <button
-                                className="bg-blue-500 hover:bg-blue-300 text-white py-1 px-2 rounded mx-2"
+                                className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded mx-2"
                                 onClick={() => {
                                     userAction("unfollow", list.id_str);
                                 }}
@@ -31,7 +31,7 @@ export const ListDetailView = ({
                             </button>
                         ) : (
                             <button
-                                className="bg-blue-500 hover:bg-blue-300 text-white py-1 px-2 rounded mx-2"
+                                className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded mx-2"
                                 onClick={() => {
                                     userAction("follow", list.id_str);
                                 }}

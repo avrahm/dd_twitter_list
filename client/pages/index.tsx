@@ -11,10 +11,12 @@ const Home: NextPage = () => {
                 <title>DD Twitter List</title>
             </Head>
 
-            <h1 className="text-3xl font-bold underline pb-5">Welcome to DD Twitter List</h1>
+            <h1 className="text-3xl font-bold underline py-5 text-center">
+                Welcome to DD Twitter List
+            </h1>
 
-            <SignUpView />
             <div className={styles.container}>
+                <SignUpView />
                 <ListViewController />
             </div>
         </div>
