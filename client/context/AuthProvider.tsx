@@ -21,7 +21,7 @@ const AuthContext = createContext<UserContext>(defaultState);
 
 export type Props = {
     children: ReactNode;
-    user?: object | null;
+    user?: User | null;
 };
 
 const AuthProvider = (props: Props): JSX.Element | any => {
