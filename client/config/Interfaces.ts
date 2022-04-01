@@ -28,3 +28,7 @@ export interface Member {
     followers_count: number;
     friends_count: number;
 }
+
+export interface Wallet {
+    walletAddress: string;
+}

@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { getListOfUsers, manageList, manageMember } from "../../api/twitter/functions";
 import { List, User } from "../../config/Interfaces";
 import { useAuth } from "../../context/AuthProvider";
+import { useWallet } from "../../context/WalletProvider";
 import { ListDetailView } from "../views/listDetailView";
 
 export const ListDetailController = ({ list }: { list: List }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [isMember, setIsMember] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const { user } = useAuth();
+    const { hasNFT } = useWallet();
 
     const isUserOnListByType = async (user: User, type: string) => {
         const allUsersByType = await getListOfUsers(user, type); // followers or members
@@ -31,23 +34,28 @@ export const ListDetailController = ({ list }: { list: List }) => {
     };
 
     const userAction = async (action: string, listId: string) => {
+        setIsLoading(true);
         switch (action) {
             case "follow":
                 await manageList(user as User, listId, "create");
-                isUserOnListByType(user, "followers");
-                return;
+                await isUserOnListByType(user, "followers");
+                setIsLoading(false);
+                break;
             case "unfollow":
                 await manageList(user as User, listId, "destroy");
-                isUserOnListByType(user, "followers");
-                return;
+                await isUserOnListByType(user, "followers");
+                setIsLoading(false);
+                break;
             case "addMember":
                 await manageMember(user as User, listId, "create");
-                isUserOnListByType(user, "members");
-                return;
+                await isUserOnListByType(user, "members");
+                setIsLoading(false);
+                break;
             case "removeMember":
                 await manageMember(user as User, listId, "destroy");
-                isUserOnListByType(user, "members");
-                return;
+                await isUserOnListByType(user, "members");
+                setIsLoading(false);
+                break;
             default:
                 return false;
         }
@@ -69,6 +77,8 @@ export const ListDetailController = ({ list }: { list: List }) => {
                     userAction={userAction}
                     isFollowing={isFollowing}
                     isMember={isMember}
+                    isLoading={isLoading}
+                    hasNFT={hasNFT}
                 />
             )}
         </div>
