@@ -13,6 +13,7 @@ export const ListViewController: NextPage = () => {
     useEffect(() => {
         if (user) {
             getMainList().then(async (list) => {
+                if (!list) return null;
                 setList(list[0]);
                 getListOfUsers(user, "members").then((members) => {
                     setMembers(members.users);
