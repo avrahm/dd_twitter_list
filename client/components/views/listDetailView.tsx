@@ -1,5 +1,6 @@
 import { MdOpenInNew } from "react-icons/md";
 import { List, Wallet } from "../../config/Interfaces";
+import { useAuth } from "../../context/AuthProvider";
 import { useWallet } from "../../context/WalletProvider";
 
 export const ListDetailView = ({
@@ -9,6 +10,7 @@ export const ListDetailView = ({
     isFollowing,
     isMember,
     hasNFT,
+    followAll,
 }: {
     list: List;
     userAction: Function;
@@ -16,8 +18,10 @@ export const ListDetailView = ({
     isFollowing: boolean;
     isMember: boolean;
     hasNFT: boolean;
+    followAll: Function;
 }) => {
     const { connectWallet, wallet } = useWallet();
+    const { user } = useAuth();
     return (
         <div className="flex flex-col p-4 w-full lg:w-[300px]">
             {list && (
@@ -26,22 +30,22 @@ export const ListDetailView = ({
                     <div>{list.description}</div>
                     <div>Members: {list.member_count}</div>
                     <div>Followers: {list.subscriber_count}</div>
-                    <ListDetailButtonContainer
-                        connectWallet={connectWallet}
-                        wallet={wallet}
-                        list={list}
-                        userAction={userAction}
-                        isLoading={isLoading}
-                        isFollowing={isFollowing}
-                        isMember={isMember}
-                        hasNFT={hasNFT}
-                    />
+                    {user && (
+                        <ListDetailButtonContainer
+                            connectWallet={connectWallet}
+                            wallet={wallet}
+                            list={list}
+                            userAction={userAction}
+                            isLoading={isLoading}
+                            isFollowing={isFollowing}
+                            isMember={isMember}
+                            hasNFT={hasNFT}
+                            followAll={followAll}
+                        />
+                    )}
                     {wallet && !hasNFT && (
                         <div className="self-center">
-                            <a
-                                className="flex flex-row items-center"
-                                href="https://opensea.io/collection/devs-for-revolution"
-                            >
+                            <a className="flex flex-row items-center" href="https://opensea.io/collection/devs-for-revolution">
                                 <span className="pr-2">Buy D4R on OpenSea</span> <MdOpenInNew />
                             </a>
                         </div>
@@ -87,6 +91,7 @@ const ListDetailButtonContainer = ({
     wallet,
     connectWallet,
     hasNFT,
+    followAll,
 }: {
     list: List;
     userAction: Function;
@@ -96,44 +101,21 @@ const ListDetailButtonContainer = ({
     wallet: Wallet;
     connectWallet: Function;
     hasNFT: boolean;
+    followAll: Function;
 }) => {
     return (
         <>
             <div className="flex flex-row py-2 justify-center">
                 {isFollowing ? (
-                    <ListDetailButton
-                        list={list}
-                        userAction={userAction}
-                        isLoading={isLoading}
-                        action="unfollow"
-                        label="Unfollow"
-                    />
+                    <ListDetailButton list={list} userAction={userAction} isLoading={isLoading} action="unfollow" label="Unfollow List" />
                 ) : (
-                    <ListDetailButton
-                        list={list}
-                        userAction={userAction}
-                        isLoading={isLoading}
-                        action="follow"
-                        label="Follow"
-                    />
+                    <ListDetailButton list={list} userAction={userAction} isLoading={isLoading} action="follow" label="Follow List" />
                 )}
                 {hasNFT ? (
                     isMember ? (
-                        <ListDetailButton
-                            list={list}
-                            userAction={userAction}
-                            isLoading={isLoading}
-                            action="removeMember"
-                            label="Leave List"
-                        />
+                        <ListDetailButton list={list} userAction={userAction} isLoading={isLoading} action="removeMember" label="Leave List" />
                     ) : (
-                        <ListDetailButton
-                            list={list}
-                            userAction={userAction}
-                            isLoading={isLoading}
-                            action="addMember"
-                            label="Join List"
-                        />
+                        <ListDetailButton list={list} userAction={userAction} isLoading={isLoading} action="addMember" label="Join List" />
                     )
                 ) : (
                     <button
@@ -141,9 +123,16 @@ const ListDetailButtonContainer = ({
                         onClick={() => connectWallet()}
                         disabled={wallet && !hasNFT && true}
                     >
-                        {!wallet ? "Connect Wallet" : "No NFT Found"}
+                        {!wallet ? "Validate DD NFT" : "No NFT Found"}
                     </button>
                 )}
+                <button
+                    className="bg-green-500 hover:bg-green-700 text-black hover:text-white py-1 px-2 rounded mx-2 disabled:bg-slate-400 disabled:text-gray-800"
+                    onClick={() => followAll()}
+                    disabled={false}
+                >
+                    Follow Everyone
+                </button>
             </div>
         </>
     );

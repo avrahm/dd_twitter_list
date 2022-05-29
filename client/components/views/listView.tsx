@@ -5,7 +5,7 @@ import { MemberListController } from "../controllers/memberListController";
 export const ListView = ({ list, members }: { list: List; members: Member[] }) => {
     return (
         <div className="flex lg:flex-row flex-col">
-            <ListDetailController list={list} />
+            <ListDetailController list={list} members={members} />
             <MemberListController members={members} />
         </div>
     );
