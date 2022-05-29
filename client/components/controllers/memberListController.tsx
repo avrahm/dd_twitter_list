@@ -74,7 +74,7 @@ export const MemberListController = ({ members }: { members: Member[] }) => {
 
     return (
         <div className="">
-            {sortedMembers && user && (
+            {sortedMembers && (
                 <>
                     <SortedDiv sortBy={sortBy} sort={sort} setSort={setSort} sortList={sortList} />
                     {sortedMembers.map((member, index) => {

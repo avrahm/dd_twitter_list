@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { VscGithub } from "react-icons/vsc";
 import { ListViewController } from "../components/controllers/listViewController";
 import { DarkModeToggle } from "../components/views/darkModeToggle";
 import { SignUpView } from "../components/views/signupView";
@@ -24,6 +25,18 @@ const Home: NextPage = () => {
             <div className={`${styles.container} ${darkMode ? styles.darkMode : styles.lightMode}`}>
                 <SignUpView />
                 <ListViewController />
+            </div>
+
+            <div className="flex flex-col  items-center py-10">
+                <span>
+                    Built by <a href="https://twitter.com/avrahm">@avrahm</a>
+                </span>
+                <span className="flex flex-row items-center">
+                    <a href="https://github.com/avrahm/dd_twitter_list" className="pr-2 py-1">
+                        View on GitHub
+                    </a>
+                    <VscGithub />
+                </span>
             </div>
         </div>
     );

@@ -11,16 +11,14 @@ export const ListViewController: NextPage = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-        if (user) {
-            getMainList().then(async (list) => {
-                if (!list) return null;
-                setList(list[0]);
-                getListOfUsers(user, "members").then((members) => {
-                    setMembers(members.users);
-                });
+        getMainList().then(async (list) => {
+            if (!list) return null;
+            setList(list[0]);
+            getListOfUsers("members").then((members) => {
+                setMembers(members.users);
             });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user === null]);
 
     return <ListView list={list} members={members} />;
