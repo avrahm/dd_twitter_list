@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { FcGenericSortingAsc, FcGenericSortingDesc } from "react-icons/fc";
 import { Member } from "../../config/Interfaces";
 import { useAuth } from "../../context/AuthProvider";
+import { useTheme } from "../../context/ThemeProvider";
+import styles from "../../styles/Home.module.css";
 import { MemberListView } from "../views/memberListView";
 
 export const MemberListController = ({ members }: { members: Member[] }) => {
@@ -85,10 +87,11 @@ export const MemberListController = ({ members }: { members: Member[] }) => {
 };
 
 const SortedDiv = ({ children, sortBy, sort, setSort, sortList }: any) => {
+    const { darkMode } = useTheme();
     return (
         <div className="flex flex-row justify-center items-center">
             <span className="pr-2"> Sort:</span>
-            <select className="px-2" onChange={(e) => sortList(e.target.value)}>
+            <select className={`px-2 ${darkMode ? styles.darkMode : styles.lightMode}`} onChange={(e) => sortList(e.target.value)}>
                 <option value="name">Name</option>
                 <option value="followers">Followers</option>
                 <option value="following">Following</option>
