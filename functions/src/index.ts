@@ -19,16 +19,19 @@ app.use("/api", router);
 router.get("/list", listController.getLists);
 
 // get a list followers
-router.get("/list/followers", firebaseAuthToken, listController.getListFollowers);
+router.get("/list/followers", listController.getListFollowers);
 
 // get a list members
-router.get("/list/members", firebaseAuthToken, listController.getListMembers);
+router.get("/list/members", listController.getListMembers);
 
 // allow a user to follow/unfollow the list
 router.post("/list", firebaseAuthToken, listController.manageList);
 
 // allow a user to add/remove themselves from the list
 router.post("/list/member/", firebaseAuthToken, listController.manageMember);
+
+// allow a user to follow/unfollow other users
+router.post("/friend/", firebaseAuthToken, listController.manageFollow);
 
 // Export the api to Firebase Cloud Functions
 exports.app = functions.https.onRequest(app);

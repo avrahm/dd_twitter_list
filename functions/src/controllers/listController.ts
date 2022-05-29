@@ -7,6 +7,7 @@ type Request = {
     body: {
         twitterId: string;
         listId: string;
+        userId: string;
         oauthToken: string;
         oauthTokenSecret: string;
         action: string;
@@ -113,25 +114,18 @@ export const manageList = async (req: Request, res: Response): Promise<unknown> 
         list_id: req.body.listId,
         screen_name: req.body.twitterId,
     };
-    return useConsumer.post(
-        url,
-        token,
-        tokenSecret,
-        body,
-        "application/json",
-        (error, data, response) => {
-            if (error) {
-                const errorCode = error.statusCode || 500;
-                return res.status(errorCode).send({
-                    error: error.data,
-                });
-            }
-            return res.status(200).send({
-                message: response?.statusCode,
-                data: response?.statusMessage,
+    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+        if (error) {
+            const errorCode = error.statusCode || 500;
+            return res.status(errorCode).send({
+                error: error.data,
             });
         }
-    );
+        return res.status(200).send({
+            message: response?.statusCode,
+            data: response?.statusMessage,
+        });
+    });
 };
 
 export const manageMember = async (req: Request, res: Response): Promise<unknown> => {
@@ -144,23 +138,39 @@ export const manageMember = async (req: Request, res: Response): Promise<unknown
         list_id: req.body.listId,
         user_id: req.body.twitterId,
     };
-    return useConsumer.post(
-        url,
-        token,
-        tokenSecret,
-        body,
-        "application/json",
-        (error, data, response) => {
-            if (error) {
-                const errorCode = error.statusCode || 500;
-                return res.status(errorCode).send({
-                    error: error.data,
-                });
-            }
-            return res.status(200).send({
-                message: response?.statusCode,
-                data: response?.statusMessage,
+    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+        if (error) {
+            const errorCode = error.statusCode || 500;
+            return res.status(errorCode).send({
+                error: error.data,
             });
         }
-    );
+        return res.status(200).send({
+            message: response?.statusCode,
+            data: response?.statusMessage,
+        });
+    });
+};
+
+export const manageFollow = async (req: Request, res: Response): Promise<unknown> => {
+    const useConsumer = consumer;
+    const { action } = req.body;
+    const url = configs.TWITTER_API_URL + `/1.1/friendships/${action}.json`;
+    const token = req.body.oauthToken;
+    const tokenSecret = req.body.oauthTokenSecret;
+    const body = {
+        user_id: req.body.userId,
+    };
+    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+        if (error) {
+            const errorCode = error.statusCode || 500;
+            return res.status(errorCode).send({
+                error: error.data,
+            });
+        }
+        return res.status(200).send({
+            message: response?.statusCode,
+            data: response?.statusMessage,
+        });
+    });
 };
