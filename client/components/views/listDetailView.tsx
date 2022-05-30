@@ -11,6 +11,7 @@ export const ListDetailView = ({
     isMember,
     hasNFT,
     followAll,
+    status,
 }: {
     list: List;
     userAction: Function;
@@ -19,6 +20,7 @@ export const ListDetailView = ({
     isMember: boolean;
     hasNFT: boolean;
     followAll: Function;
+    status: string;
 }) => {
     const { connectWallet, wallet } = useWallet();
     const { user } = useAuth();
@@ -31,17 +33,20 @@ export const ListDetailView = ({
                     <div>Members: {list.member_count}</div>
                     <div>Followers: {list.subscriber_count}</div>
                     {user && (
-                        <ListDetailButtonContainer
-                            connectWallet={connectWallet}
-                            wallet={wallet}
-                            list={list}
-                            userAction={userAction}
-                            isLoading={isLoading}
-                            isFollowing={isFollowing}
-                            isMember={isMember}
-                            hasNFT={hasNFT}
-                            followAll={followAll}
-                        />
+                        <div className="flex flex-col justify-center items-center">
+                            <ListDetailButtonContainer
+                                connectWallet={connectWallet}
+                                wallet={wallet}
+                                list={list}
+                                userAction={userAction}
+                                isLoading={isLoading}
+                                isFollowing={isFollowing}
+                                isMember={isMember}
+                                hasNFT={hasNFT}
+                                followAll={followAll}
+                            />
+                            <span>{status}</span>
+                        </div>
                     )}
                     {wallet && !hasNFT && (
                         <div className="self-center">

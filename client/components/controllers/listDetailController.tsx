@@ -9,7 +9,10 @@ export const ListDetailController = ({ list, members }: { list: List; members: M
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [isMember, setIsMember] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [followAllCount, setFollowAllCount] = useState<number>(0);
+    const [status, setStatus] = useState<string>("");
+    let successfulCount = 0;
+    let errorCount = 0;
+
     const { user } = useAuth();
     const { hasNFT } = useWallet();
 
@@ -79,10 +82,24 @@ export const ListDetailController = ({ list, members }: { list: List; members: M
                 return;
             }
             const id = ids.shift();
-            await manageFollow(user as User, id, "create");
-            setFollowAllCount(followAllCount + 1);
-            console.log(followAllCount);
-        }, 1000);
+            setStatus(
+                `Remaining:  ${ids.length} | Successful: ${successfulCount} | Errors: ${errorCount} out of ${members.length}. DO NOT CLOSE THIS WINDOW.`
+            );
+
+            // follow user
+            try {
+                const response = await manageFollow(user as User, id, "create");
+                if (response) {
+                    successfulCount++;
+                    console.log(`Successfully following user ${id} / ${successfulCount}`);
+                } else {
+                    errorCount++;
+                    console.log(`Error following user ${id} / ${errorCount}`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }, 1300);
 
         setIsLoading(false);
     };
@@ -106,6 +123,7 @@ export const ListDetailController = ({ list, members }: { list: List; members: M
                     isLoading={isLoading}
                     hasNFT={hasNFT}
                     followAll={followAll}
+                    status={status}
                 />
             )}
         </div>
