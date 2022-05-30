@@ -42,7 +42,7 @@ export const MemberListView = ({ member, index }: { member: Member; index: numbe
                     {user && (
                         <div
                             onClick={() => followUser(member.id_str)}
-                            className="text-right border-2 border-blue-400 bg-blue-500 text-white rounded-full px-3"
+                            className="text-right cursor-pointer border-2 border-blue-400 bg-blue-500 text-white rounded-full px-3"
                         >
                             {status}
                         </div>
