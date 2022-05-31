@@ -1,13 +1,12 @@
 import { signInWithPopup, TwitterAuthProvider } from "@firebase/auth";
 import { User } from "../../config/Interfaces";
-import { firebase } from "./firebase";
+import { auth } from "./firebase";
 import { createUser } from "./functions";
 
 export const twitterSignIn = () => {
     const provider = new TwitterAuthProvider();
 
-    const fbAuth = firebase.auth;
-    signInWithPopup(fbAuth, provider)
+    signInWithPopup(auth, provider)
         .then(async (result) => {
             // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
             // You can use these server side with your app's credentials to access the Twitter API.

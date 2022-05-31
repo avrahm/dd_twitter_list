@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { firebase } from "../api/firebase/firebase";
+import { auth } from "../api/firebase/firebase";
 import { getUser, refreshToken, signout } from "../api/firebase/functions";
 import { User } from "../config/Interfaces";
 
@@ -33,7 +33,7 @@ const AuthProvider = (props: Props): JSX.Element | any => {
     };
 
     useEffect((): any => {
-        firebase.auth.onAuthStateChanged(async (user: any) => {
+        auth.onAuthStateChanged(async (user: any) => {
             if (user) {
                 await refreshToken(user);
                 const userData = await getUser(user.uid);
