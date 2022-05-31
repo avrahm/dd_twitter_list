@@ -40,10 +40,10 @@ const WalletProvider = (props: Props): JSX.Element | any => {
 
     useEffect((): any => {
         // check if wallet is connected
-        if (wallet && user) {
+        if (user) {
             checkIfWalletIsConnected();
         }
-    }, [user, wallet]);
+    }, [user]);
 
     const connectWallet = async () => {
         try {
