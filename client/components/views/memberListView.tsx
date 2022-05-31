@@ -20,7 +20,7 @@ export const MemberListView = ({
     const { user } = useAuth();
 
     const getStatus = () => {
-        if (isError) setStatus("Error");
+        if (isError) setStatus("Pending");
         if (isFollowing) setStatus("Unfollow");
     };
 
