@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { FcGenericSortingAsc, FcGenericSortingDesc } from "react-icons/fc";
-import { Member } from "../../config/Interfaces";
-import { useAuth } from "../../context/AuthProvider";
+import { List, Member } from "../../config/Interfaces";
 import { useTheme } from "../../context/ThemeProvider";
 import styles from "../../styles/Home.module.css";
 import { MemberListView } from "../views/memberListView";
 
-export const MemberListController = ({ members }: { members: Member[] }) => {
-    const { user } = useAuth();
-
+export const MemberListController = ({
+    members,
+    list,
+    following,
+    errors,
+}: {
+    members: Member[];
+    list: List;
+    following: string[];
+    errors: string[];
+}) => {
     const [sortedMembers, setSortedMembers] = useState<Member[]>(members);
     const [sort, setSort] = useState<boolean>(true);
     const [sortBy, setSortBy] = useState<string>("name");
@@ -70,7 +77,7 @@ export const MemberListController = ({ members }: { members: Member[] }) => {
 
     useEffect(() => {
         setSortedMembers([...members].sort(sortListByName));
-    }, [members]);
+    }, [members, following, errors]);
 
     return (
         <div className="">
@@ -78,7 +85,10 @@ export const MemberListController = ({ members }: { members: Member[] }) => {
                 <>
                     <SortedDiv sortBy={sortBy} sort={sort} setSort={setSort} sortList={sortList} />
                     {sortedMembers.map((member, index) => {
-                        return <MemberListView key={index} member={member} index={index} />;
+                        // check if user is following the list
+                        const isFollowing = following.includes(member.id_str);
+                        const isError = errors.includes(member.id_str);
+                        return <MemberListView key={index} member={member} index={index} isFollowing={isFollowing} isError={isError} />;
                     })}
                 </>
             )}
