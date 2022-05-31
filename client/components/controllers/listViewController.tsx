@@ -16,7 +16,7 @@ export const ListViewController: NextPage = () => {
     const [following, setFollowing] = useState<any[]>([]);
     const [errors, setErrors] = useState<any[]>([]);
 
-    let successfulCount = 0;
+    let successfulCount = following.length || 0;
     let errorCount = 0;
     const { user } = useAuth();
 
@@ -46,8 +46,8 @@ export const ListViewController: NextPage = () => {
         // get ids of all members
         const ids: string[] = getIds(members);
 
-        const errorIds: string[] = [];
-        const successfulIds: string[] = [];
+        const errorIds: string[] = errors || [];
+        const successfulIds: string[] = following || [];
 
         // loop through ids at an interval of 1 second
         const interval = setInterval(async () => {
@@ -57,12 +57,12 @@ export const ListViewController: NextPage = () => {
                 // upload errors and successes to firebase
                 await saveFollows(user, list.id_str, errorIds, successfulIds);
                 const message = errorCount > 0 ? "Try again in a few hours" : "All members followed";
-                setStatus(`Successful: ${successfulCount} | Errors: ${errorCount} out of ${members.length}. ${message}`);
+                setStatus(`Successful: ${successfulCount} | Pending: ${errorCount} out of ${members.length}. ${message}`);
                 return;
             }
             const id: string | any = ids.shift();
             setStatus(
-                `Remaining: ${ids.length} | Successful: ${successfulCount} | Errors: ${errorCount} out of ${members.length}. DO NOT CLOSE THIS WINDOW.`
+                `Remaining: ${ids.length} | Successful: ${successfulCount} | Pending: ${errorCount} out of ${members.length}. DO NOT CLOSE THIS WINDOW.`
             );
 
             // follow user
@@ -90,7 +90,7 @@ export const ListViewController: NextPage = () => {
             setErrors(response.errors);
             // convert response last updated firebase timestamp to date
             const lastUpdated = new Date(response.lastUpdated.seconds * 1000).toLocaleString();
-            setStatus(`Last updated: ${lastUpdated}.  Successful: ${response.successes.length} | Errors: ${response.errors.length}`);
+            setStatus(`Last updated: ${lastUpdated}.  Successful: ${response.successes.length} | Pending: ${response.errors.length}`);
         }
     };
 
