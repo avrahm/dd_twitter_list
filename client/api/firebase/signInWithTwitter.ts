@@ -38,6 +38,6 @@ export const twitterSignIn = () => {
             // The AuthCredential type that was used.
             const credential = TwitterAuthProvider.credentialFromError(error);
 
-            console.log(errorCode, errorMessage, email, credential);
+            console.error(errorCode, errorMessage, email, credential);
         });
 };

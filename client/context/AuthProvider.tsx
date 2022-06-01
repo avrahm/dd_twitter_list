@@ -40,7 +40,6 @@ const AuthProvider = (props: Props): JSX.Element | any => {
                 setUser(userData);
             } else {
                 setUser(null);
-                console.log("no user");
             }
         });
     }, []);

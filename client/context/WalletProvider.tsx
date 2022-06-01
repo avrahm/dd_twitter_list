@@ -48,7 +48,6 @@ const WalletProvider = (props: Props): JSX.Element | any => {
     const connectWallet = async () => {
         try {
             const { ethereum } = window as any;
-            console.log("Connecting metamask!");
             if (!ethereum) return alert("Please install metamask ");
             const accounts = await ethereum.request({
                 method: "eth_requestAccounts",
@@ -64,7 +63,7 @@ const WalletProvider = (props: Props): JSX.Element | any => {
         try {
             // extract ethereum object from the window
             const { ethereum } = window as any;
-            if (!ethereum) return console.log("Please install metamask");
+            if (!ethereum) return console.error("Couldn't find metamask!");
 
             const accounts = await ethereum.request({ method: "eth_accounts" });
             if (accounts.length !== 0) {
@@ -73,7 +72,6 @@ const WalletProvider = (props: Props): JSX.Element | any => {
                 setWallet(account);
                 const hasD4RNFT = await checkGraph(account);
                 if (hasD4RNFT) {
-                    console.log("has NFT");
                     setHasNFT(true);
                 }
             } else {
@@ -81,7 +79,7 @@ const WalletProvider = (props: Props): JSX.Element | any => {
                 setHasNFT(false);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 

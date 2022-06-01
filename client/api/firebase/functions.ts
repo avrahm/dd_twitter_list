@@ -20,7 +20,7 @@ export const createUser = async (user: User) => {
     try {
         return await setDoc(doc(db, "users", user.uid), user);
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -33,7 +33,7 @@ export const saveFollows = async (user: User, listId: string, errors: string[], 
             lastUpdated: new Date(),
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -43,7 +43,7 @@ export const getUserListFollows = async (user: User, listId: string) => {
             return follows.data();
         });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
