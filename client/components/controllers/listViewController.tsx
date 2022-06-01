@@ -7,6 +7,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { ListView } from "../views/listView";
 
 export const ListViewController: NextPage = () => {
+    const { user } = useAuth();
     const [list, setList] = useState<any>(null);
     const [members, setMembers] = useState<Member[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -16,9 +17,9 @@ export const ListViewController: NextPage = () => {
     const [following, setFollowing] = useState<any[]>([]);
     const [errors, setErrors] = useState<any[]>([]);
 
+    let followSpeed = 1500;
     let successfulCount = following.length || 0;
     let errorCount = 0;
-    const { user } = useAuth();
 
     useEffect(() => {
         getMainList().then(async (list) => {
@@ -46,7 +47,7 @@ export const ListViewController: NextPage = () => {
         // get ids of all members
         const ids: string[] = getIds(members);
 
-        const errorIds: string[] = errors || [];
+        const errorIds: string[] = [];
         const successfulIds: string[] = following || [];
 
         // loop through ids at an interval of 1 second
@@ -55,7 +56,11 @@ export const ListViewController: NextPage = () => {
                 clearInterval(interval);
                 setIsLoading(false);
                 // upload errors and successes to firebase
-                await saveFollows(user, list.id_str, errorIds, successfulIds);
+
+                // only upload unique errorIds
+                const uniqueErrorIds = [...new Set(errorIds)];
+
+                await saveFollows(user, list.id_str, uniqueErrorIds, successfulIds);
                 const message = errorCount > 0 ? "Try again in a few hours" : "All members followed";
                 setStatus(`Successful: ${successfulCount} | Pending: ${errorCount} out of ${members.length}. ${message}`);
                 return;
@@ -72,13 +77,15 @@ export const ListViewController: NextPage = () => {
                     successfulCount++;
                     successfulIds.push(id);
                 } else {
-                    errorCount++;
                     errorIds.push(id);
+                    errorCount++;
+                    if (errorCount < 10) followSpeed = followSpeed * 1.5;
+                    if (errorCount > 10) followSpeed = 1500;
                 }
             } catch (error) {
                 console.error(error);
             }
-        }, 1800);
+        }, followSpeed);
 
         setIsLoading(false);
     };
@@ -90,7 +97,7 @@ export const ListViewController: NextPage = () => {
             setErrors(response.errors);
             // convert response last updated firebase timestamp to date
             const lastUpdated = new Date(response.lastUpdated.seconds * 1000).toLocaleString();
-            setStatus(`Last updated: ${lastUpdated}.  Successful: ${response.successes.length} | Pending: ${response.errors.length}`);
+            setStatus(`Last updated: ${lastUpdated}.  Successful: ${response.successes.length} | Pending: ${[...new Set(response.errors)].length}`);
         }
     };
 
