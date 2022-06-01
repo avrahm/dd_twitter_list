@@ -1,16 +1,19 @@
 import axios from "axios";
 import { Response } from "express";
 import { configs } from "../config/configs";
+import { getTokens, getUserDoc } from "../helpers/firebaseHelper";
 import consumer from "../helpers/twitterHelper";
 
 type Request = {
     body: {
         twitterId: string;
+        followId: string;
         listId: string;
         userId: string;
         oauthToken: string;
         oauthTokenSecret: string;
         action: string;
+        listOwnerId: string;
     };
     user?: string;
     params: {
@@ -108,13 +111,23 @@ export const manageList = async (req: Request, res: Response): Promise<unknown> 
     const useConsumer = consumer;
     const { action } = req.body;
     const url = configs.TWITTER_API_URL + `/1.1/lists/subscribers/${action}.json`;
-    const token = req.body.oauthToken;
-    const tokenSecret = req.body.oauthTokenSecret;
+
+    // if there is no user in firebase, return error
+    if ((await getUserDoc(req.body.userId)).empty) {
+        return res.status(404).send({
+            error: "User not found",
+        });
+    }
+
     const body = {
         list_id: req.body.listId,
-        screen_name: req.body.twitterId,
+        screen_name: req.body.userId,
     };
-    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+
+    // get token and secret from firebase user document
+    const { token, secret } = await getTokens(req.body.userId);
+
+    return useConsumer.post(url, token, secret, body, "application/json", (error, data, response) => {
         if (error) {
             const errorCode = error.statusCode || 500;
             return res.status(errorCode).send({
@@ -132,13 +145,15 @@ export const manageMember = async (req: Request, res: Response): Promise<unknown
     const useConsumer = consumer;
     const { action } = req.body;
     const url = configs.TWITTER_API_URL + `/1.1/lists/members/${action}.json`;
-    const token = configs.TWITTER_OWNER_TOKEN;
-    const tokenSecret = configs.TWITTER_OWNER_SECRET;
+
     const body = {
         list_id: req.body.listId,
-        user_id: req.body.twitterId,
+        user_id: req.body.userId,
     };
-    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+    // get token and secret from firebase user document
+    const { token, secret } = await getTokens(req.body.listOwnerId);
+
+    return useConsumer.post(url, token, secret, body, "application/json", (error, data, response) => {
         if (error) {
             const errorCode = error.statusCode || 500;
             return res.status(errorCode).send({
@@ -156,12 +171,21 @@ export const manageFollow = async (req: Request, res: Response): Promise<unknown
     const useConsumer = consumer;
     const { action } = req.body;
     const url = configs.TWITTER_API_URL + `/1.1/friendships/${action}.json`;
-    const token = req.body.oauthToken;
-    const tokenSecret = req.body.oauthTokenSecret;
+
+    // if there is no user in firebase, return error
+    if ((await getUserDoc(req.body.userId)).empty) {
+        return res.status(404).send({
+            error: "User not found",
+        });
+    }
+
+    // get token and secret from firebase user document
+    const { token, secret } = await getTokens(req.body.userId);
+
     const body = {
-        user_id: req.body.userId,
+        user_id: req.body.followId,
     };
-    return useConsumer.post(url, token, tokenSecret, body, "application/json", (error, data, response) => {
+    return useConsumer.post(url, token, secret, body, "application/json", (error, data, response) => {
         if (error) {
             const errorCode = error.statusCode || 500;
             return res.status(errorCode).send({

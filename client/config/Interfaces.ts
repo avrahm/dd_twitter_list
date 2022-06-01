@@ -17,6 +17,9 @@ export interface List {
     description: string;
     member_count: number;
     subscriber_count: number;
+    user: {
+        id_str: string;
+    };
 }
 
 export interface Member {

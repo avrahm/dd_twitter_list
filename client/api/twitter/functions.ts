@@ -1,6 +1,6 @@
 import axios from "axios";
 import { configs } from "../../config/configs";
-import { User } from "../../config/Interfaces";
+import { List, User } from "../../config/Interfaces";
 
 export const getMainList = async (userId: string = "avrahm") => {
     const lists = await getLists(userId);
@@ -19,7 +19,7 @@ const getLists = async (twitterId: string) => {
         if (response.status === 200) return response.data.data;
         return null;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -33,7 +33,7 @@ export const getListOfUsers = async (type: string, listId: string | undefined = 
         if (response.status === 200) return response.data.data;
         return null;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -41,9 +41,7 @@ export const manageList = async (user: User, listId: string, action: string) => 
     const url = configs.API_URL + "/list";
     const data = {
         listId: listId,
-        oauthToken: user.token,
-        oauthTokenSecret: user.secret,
-        twitterId: user.twitterData?.uid,
+        userId: user.twitterData?.uid,
         action: action,
     };
     const headers = {
@@ -54,15 +52,16 @@ export const manageList = async (user: User, listId: string, action: string) => 
         if (response.status !== 200) return null;
         return response.data.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
-export const manageMember = async (user: User, listId: string, action: string) => {
+export const manageMember = async (user: User, list: List, action: string) => {
     const url = configs.API_URL + `/list/member`;
     const data = {
-        listId: listId,
-        twitterId: user.twitterData?.uid,
+        listId: list.id_str,
+        listOwnerId: list.user.id_str,
+        userId: user.twitterData?.uid,
         action: action,
     };
     const headers = {
@@ -73,17 +72,15 @@ export const manageMember = async (user: User, listId: string, action: string) =
         if (response.status !== 200) return null;
         return response.data.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
-export const manageFollow = async (user: User, userId?: string, action?: string) => {
+export const manageFollow = async (user: User, followId?: string, action?: string) => {
     const url = configs.API_URL + "/friend";
     const data = {
-        userId: userId,
-        oauthToken: user.token,
-        oauthTokenSecret: user.secret,
-        twitterId: user.twitterData?.uid,
+        followId: followId,
+        userId: user.twitterData?.uid,
         action: action,
     };
     const headers = {
@@ -94,6 +91,6 @@ export const manageFollow = async (user: User, userId?: string, action?: string)
         if (response.status !== 200) return null;
         return response.data.data;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };

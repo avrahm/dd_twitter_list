@@ -59,12 +59,12 @@ export const ListDetailController = ({
                 setIsLoading(false);
                 break;
             case "addMember":
-                await manageMember(user as User, listId, "create");
+                await manageMember(user as User, list, "create");
                 await isUserOnListByType(user, "members");
                 setIsLoading(false);
                 break;
             case "removeMember":
-                await manageMember(user as User, listId, "destroy");
+                await manageMember(user as User, list, "destroy");
                 await isUserOnListByType(user, "members");
                 setIsLoading(false);
                 break;
