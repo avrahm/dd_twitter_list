@@ -22,7 +22,7 @@ export const ListView = ({
     setIsLoading: Function;
 }) => {
     return (
-        <div className="flex lg:flex-row flex-col">
+        <div className="flex flex-col">
             <ListDetailController
                 setIsLoading={setIsLoading}
                 isLoading={isLoading}

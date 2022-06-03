@@ -40,13 +40,13 @@ export const MemberListView = ({
     }, [isFollowing, isError]);
 
     return (
-        <div key={member.id_str} className="p-2 flex flex-row sm:w-[610px] w-full hover:shadow">
+        <div key={member.id_str} className="p-2 justify-center flex flex-row w-full hover:shadow">
             <div className="p-2 w-[75px]">
                 <a href={`https://www.twitter.com/${member.screen_name}`} target="_blank" rel="noreferrer">
                     <Image src={member.profile_image_url_https} width={48} height={48} alt={member.screen_name} className="rounded-full" />
                 </a>
             </div>
-            <div className="flex flex-col sm:w-[520px] w-full">
+            <div className="flex flex-col min-w-[450px] w-full max-w-[550px]">
                 <div className="flex flex-row justify-between items-center">
                     <div>
                         <a href={`https://www.twitter.com/${member.screen_name}`} target="_blank" rel="noreferrer">

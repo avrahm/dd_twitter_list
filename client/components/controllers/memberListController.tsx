@@ -80,19 +80,17 @@ export const MemberListController = ({
     }, [members, following, errors]);
 
     return (
-        <div className="">
-            {sortedMembers && (
-                <>
-                    <SortedDiv sortBy={sortBy} sort={sort} setSort={setSort} sortList={sortList} />
-                    {sortedMembers.map((member, index) => {
-                        // check if user is following the list
-                        const isFollowing = following.includes(member.id_str);
-                        const isError = errors.includes(member.id_str);
-                        return <MemberListView key={index} member={member} index={index} isFollowing={isFollowing} isError={isError} />;
-                    })}
-                </>
-            )}
-        </div>
+        sortedMembers && (
+            <>
+                <SortedDiv sortBy={sortBy} sort={sort} setSort={setSort} sortList={sortList} />
+                {sortedMembers.map((member, index) => {
+                    // check if user is following the list
+                    const isFollowing = following.includes(member.id_str);
+                    const isError = errors.includes(member.id_str);
+                    return <MemberListView key={index} member={member} index={index} isFollowing={isFollowing} isError={isError} />;
+                })}
+            </>
+        )
     );
 };
 

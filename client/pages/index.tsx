@@ -11,13 +11,13 @@ const Home: NextPage = () => {
     const { darkMode } = useTheme();
 
     return (
-        <div className={`${styles.container} ${darkMode ? styles.darkMode : styles.lightMode}`}>
+        <div className={`${styles.container} ${darkMode ? styles.darkMode : styles.lightMode} w-[100vh] sm:w-full`}>
             <Head>
                 <title>DD Twitter List</title>
             </Head>
 
-            <div className="flex flex-row items-center">
-                <h1 className="text-3xl font-bold underline py-5 text-center">DD Twitter List</h1>
+            <div className={`flex flex-row items-center`}>
+                <h1 className="text-3xl font-bold underline p-2 text-center">DD Twitter List</h1>
 
                 <DarkModeToggle />
             </div>

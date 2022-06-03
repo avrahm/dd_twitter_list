@@ -82,19 +82,17 @@ export const ListDetailController = ({
     }, [user]);
 
     return (
-        <div>
-            {list && (
-                <ListDetailView
-                    list={list}
-                    userAction={userAction}
-                    isFollowingList={isFollowingList}
-                    isMemberOfList={isMemberOfList}
-                    isLoading={isLoading}
-                    hasNFT={hasNFT}
-                    followAll={followAll}
-                    status={status}
-                />
-            )}
-        </div>
+        list && (
+            <ListDetailView
+                list={list}
+                userAction={userAction}
+                isFollowingList={isFollowingList}
+                isMemberOfList={isMemberOfList}
+                isLoading={isLoading}
+                hasNFT={hasNFT}
+                followAll={followAll}
+                status={status}
+            />
+        )
     );
 };
